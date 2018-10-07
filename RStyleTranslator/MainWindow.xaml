@@ -1,0 +1,58 @@
+﻿<Window x:Class="RStyleTranslator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RStyleTranslator"
+        mc:Ignorable="d"
+        Title="Система автоматизированного перевода" Height="359" Width="699" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Padding" Value="15,1"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="3,3,30,3"/>
+            <Setter Property="MinWidth" Value="110"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBox Name="inTextBox" TextWrapping="Wrap" AcceptsReturn="True"
+                 Text="{Binding RawText,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+        <Button Command="{Binding TranslateCommand,UpdateSourceTrigger=PropertyChanged}" Name="translateButton" Content="Перевод" Grid.Row="2" HorizontalAlignment="Left" />
+        <TextBox x:Name="outTextBox" TextWrapping="Wrap" AcceptsReturn="True"
+                 Text="{Binding TranslatedText,Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Grid.Row="3"/>
+        <Button Command="{Binding SaveXmlCommand}" Content="Экспорт в xml" RenderTransformOrigin="-1.48,-8.5" Grid.Row="2" HorizontalAlignment="Right" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Исходный язык:"/>
+            <ComboBox x:Name="langFromComboBox"
+                  DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding FromLangId}" 
+                  ItemsSource="{Binding FromLangs}"
+                   />
+            <TextBlock Text="Язык перевода:"/>
+            <ComboBox x:Name="langToComboBox"
+                  DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding ToLangId}" 
+                  ItemsSource="{Binding ToLangs}"
+                  />
+            <Separator/>
+        </StackPanel> <Button Command="{Binding UpdateLangsCommand}" Content="Обновить языки" x:Name="updLangsButton" HorizontalAlignment="Right" />
+
+    </Grid>
+</Window>
